@@ -22,7 +22,6 @@ class POL_MT_Icon_Expose_Menu(bpy.types.Menu):
 
 
         scn = context.scene
-        obj = context.object
         layout = self.layout
 
 
@@ -43,35 +42,20 @@ class POL_MT_Icon_Expose_Menu(bpy.types.Menu):
         ]
 
 
-
-
-
-
+    # Create a column to ensure vertical alignment for all items
+        col = layout.column(align=True)
 
         for option in options:
-            
+            # Instead of creating a 'row', add the property directly to the 'col'
+            # The 'prop' function will naturally align to the left in a menu/column.
             if option[2]:
-
-                row = layout.row(align=True)
-                row.label(text="", icon=option[2])
-                row.prop(scn.POL_List_Icon, option[0], text=option[1], icon=option[2])
-                row.separator()
+                # Use 'col.prop' for the property with its icon
+                col.prop(scn.POL_List_Icon, option[0], text=option[1], icon=option[2])
             else:
-                row = layout.row(align=True)
-                row.label(text="", icon="DOT")
-                row.prop(preferences, option[0], text=option[1])
-                row.separator()
-
-
-
-
-
-
-
-
+                # Fallback for options without an icon (though all in your list have one)
+                col.prop(scn.POL_List_Icon, option[0], text=option[1], icon="DOT")
 
 classes = [POL_MT_Layers_Extra_Menu, POL_MT_Icon_Expose_Menu]
-
 
 def register():
 
